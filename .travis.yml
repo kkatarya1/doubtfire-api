@@ -14,7 +14,7 @@ addons:
     update: true
 
 git:
-  depth: 3
+  depth: 1
   
 install:
   - sudo apt-get install -y ghostscript imagemagick libmagic-dev libmagickwand-dev libmagic-dev python-pygments libav-tools
