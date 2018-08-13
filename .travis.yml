@@ -1,36 +1,53 @@
+# Specify language for project
 language: ruby
-cache: 
+# Enable caching
+cache:
+  # Cache bundler
   bundler: true
+  # Cache the following directories. RVM can be cached according to Travis's docs
   directories:
    - /home/travis/.rvm/
 
+# Specify RVM version
 rvm:
   - 2.3.1
 
+# Run processes as sudo
 sudo: true
 
+# Enable postgresql service
 services:
   - postgresql
-  
+
 addons:
   postgresql: "9.6"
+  # Update apt packages
   apt:
     update: true
 
+# Shallow clone git repository. Only the last branch with an update shall be cloned without the version history
+# This helps reduce server load
 git:
   depth: 1
-  
+
+# Install following dependencies and rehash rbenv before setting the environment for script execution
 install:
   - sudo apt-get install -y ghostscript imagemagick libmagic-dev libmagickwand-dev libmagic-dev python-pygments libav-tools
   - sudo apt-get install texlive-full
   - bundle install --without production staging
   - rbenv rehash
 
+# Set the environment before running the tests
 before_script:
+  # Start postgresql service
   - sudo service postgresql start
+  # Create postgresql role
   - psql -c "CREATE ROLE itig WITH CREATEDB PASSWORD 'd872\$dh' LOGIN;"
+  # Create the database of the project in the selected database for the environment
   - bundle exec rake db:create
+  # Populate the database created in the previous test from seed/CSVs
   - echo "n" | bundle exec rake db:populate
 
+# Run the tests
 script:
   - bundle exec rake test
