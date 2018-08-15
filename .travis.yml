@@ -1,27 +1,74 @@
+# Specify language for project
 language: ruby
+# Enable caching
+cache:
+  # Cache bundler
+  bundler: true
+  # Cache the following directories. RVM can be cached according to Travis's docs
+  directories:
+   - /home/travis/.rvm/
 
+# Specify RVM version
 rvm:
   - 2.3.1
 
+# Run processes as sudo
 sudo: true
 
+# Environment settings for Production testing
+env:
+  - DF_PRODUCTION_DB_ADAPTER="mysql2"
+  - DF_PRODUCTION_DB_HOST="localhost"
+  - DF_PRODUCTION_DB_DATABASE="doubtfire_prod"
+  - DF_PRODUCTION_DB_USERNAME="test_prod"
+  - DF_PRODUCTION_DB_PASSWORD="test_prod"
+
+# Enable postgresql service
 services:
   - postgresql
-  
+  - mysql
+
 addons:
   postgresql: "9.6"
-  
+  # Update apt packages
+  apt:
+    update: true
+
+# Shallow clone git repository. Only the last branch with an update shall be cloned without the version history
+# This helps reduce server load
+git:
+  depth: 1
+
+# Install following dependencies and rehash rbenv before setting the environment for script execution
 install:
   - sudo apt-get install -y ghostscript imagemagick libmagic-dev libmagickwand-dev libmagic-dev python-pygments libav-tools
   - sudo apt-get install texlive-full
   - bundle install --without production staging
   - rbenv rehash
 
+# Set the environment before running the tests
 before_script:
+  # Start postgresql service
   - sudo service postgresql start
+  # Create postgresql role
   - psql -c "CREATE ROLE itig WITH CREATEDB PASSWORD 'd872\$dh' LOGIN;"
+  # Create the database of the project in the dev environment on postgresql
   - bundle exec rake db:create
+  # Populate the database
+  - echo "n" | bundle exec rake db:populate
+  # Create the production environment and set it up
+  - export RAILS_ENV=production
+  # Start mysql instance
+  - sudo service mysql start
+  # Creating database in MySQL
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS doubtfire_prod;'
+  - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('test_prod') where User='test_prod'; FLUSH PRIVILEGES;"
+  # Create the database of the project in the production environment
+  - bundle exec rake db:create
+  # Populate the database
   - echo "n" | bundle exec rake db:populate
 
+# Run the tests
 script:
-  - bundle exec rake test
+  - RAILS_ENV=development bundle exec rake test
+  - RAILS_ENV=production bundle exec rake test
