@@ -17,7 +17,7 @@ sudo: true
 
 # Environment settings for Production testing
 env:
-  - DF_PRODUCTION_DB_ADAPTER="mysql2" DF_PRODUCTION_DB_HOST="localhost" DF_PRODUCTION_DB_DATABASE="doubtfire_prod" DF_PRODUCTION_DB_USERNAME="test_prod" DF_PRODUCTION_DB_PASSWORD="test_prod"
+  - DF_PRODUCTION_DB_ADAPTER="mysql2" DF_PRODUCTION_DB_HOST="localhost" DF_PRODUCTION_DB_DATABASE="doubtfire_prod" DF_PRODUCTION_DB_USERNAME="test_prod" DF_PRODUCTION_DB_PASSWORD="test_prod" DF_SECRET_KEY_BASE="test_prod" DF_SECRET_KEY_ATTR="test_prod" DF_SECRET_KEY_ATTR="test_prod"
 
 # Enable postgresql service
 services:
@@ -39,7 +39,7 @@ git:
 install:
   - sudo apt-get install -y ghostscript imagemagick libmagic-dev libmagickwand-dev libmagic-dev python-pygments libav-tools
   - sudo apt-get install texlive-full
-  - bundle install --without production staging
+  - bundle install --without staging
   - rbenv rehash
 
 # Set the environment before running the tests
