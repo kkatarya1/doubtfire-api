@@ -53,18 +53,18 @@ before_script:
   # Populate the database
   - echo "n" | bundle exec rake db:populate
   # Create the production environment and set it up
-  - export RAILS_ENV=production
+  #- export RAILS_ENV=production
   # Start mysql instance
-  - sudo service mysql restart
+  #- sudo service mysql restart
   # Creating database in MySQL
-  - mysql -e 'CREATE DATABASE IF NOT EXISTS doubtfire_prod;'
-  - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('test_prod') where User='test_prod'; FLUSH PRIVILEGES;"
+  #- mysql -e 'CREATE DATABASE IF NOT EXISTS doubtfire_prod;'
+  #- sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('test_prod') where User='test_prod'; FLUSH PRIVILEGES;"
   # Create the database of the project in the production environment
-  - bundle exec rake db:create
+  #- bundle exec rake db:create
   # Populate the database
-  - echo "n" | bundle exec rake db:populate
+  #- echo "n" | bundle exec rake db:populate
 
 # Run the tests
 script:
   - RAILS_ENV=development bundle exec rake test
-  - RAILS_ENV=production bundle exec rake test
+  #- RAILS_ENV=production bundle exec rake test
