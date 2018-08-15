@@ -39,7 +39,7 @@ git:
 install:
   - sudo apt-get install -y ghostscript imagemagick libmagic-dev libmagickwand-dev libmagic-dev python-pygments libav-tools
   - sudo apt-get install texlive-full
-  - bundle install --without staging
+  - bundle install --without production staging
   - rbenv rehash
 
 # Set the environment before running the tests
@@ -66,5 +66,5 @@ before_script:
 
 # Run the tests
 script:
-  - RAILS_ENV=development bundle exec rake test
+  - bundle exec rake test
   #- RAILS_ENV=production bundle exec rake test
