@@ -15,9 +15,14 @@ rvm:
 # Run processes as sudo
 sudo: true
 
+# Environment settings for Production testing
+env:
+  - DF_PRODUCTION_DB_ADAPTER="mysql2" DF_PRODUCTION_DB_HOST="localhost" DF_PRODUCTION_DB_DATABASE="doubtfire_prod" DF_PRODUCTION_DB_USERNAME="test_prod" DF_PRODUCTION_DB_PASSWORD="test_prod" DF_SECRET_KEY_BASE="test_prod" DF_SECRET_KEY_ATTR="test_prod" DF_SECRET_KEY_ATTR="test_prod"
+
 # Enable postgresql service
 services:
   - postgresql
+  - mysql
 
 addons:
   postgresql: "9.6"
@@ -43,11 +48,23 @@ before_script:
   - sudo service postgresql start
   # Create postgresql role
   - psql -c "CREATE ROLE itig WITH CREATEDB PASSWORD 'd872\$dh' LOGIN;"
-  # Create the database of the project in the selected database for the environment
+  # Create the database of the project in the dev environment on postgresql
   - bundle exec rake db:create
-  # Populate the database created in the previous test from seed/CSVs
+  # Populate the database
   - echo "n" | bundle exec rake db:populate
+  # Create the production environment and set it up
+  #- export RAILS_ENV=production
+  # Start mysql instance
+  #- sudo service mysql restart
+  # Creating database in MySQL
+  #- mysql -e 'CREATE DATABASE IF NOT EXISTS doubtfire_prod;'
+  #- sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('test_prod') where User='test_prod'; FLUSH PRIVILEGES;"
+  # Create the database of the project in the production environment
+  #- bundle exec rake db:create
+  # Populate the database
+  #- echo "n" | bundle exec rake db:populate
 
 # Run the tests
 script:
   - bundle exec rake test
+  #- RAILS_ENV=production bundle exec rake test
