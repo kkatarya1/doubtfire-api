@@ -17,11 +17,7 @@ sudo: true
 
 # Environment settings for Production testing
 env:
-  - DF_PRODUCTION_DB_ADAPTER="mysql2"
-  - DF_PRODUCTION_DB_HOST="localhost"
-  - DF_PRODUCTION_DB_DATABASE="doubtfire_prod"
-  - DF_PRODUCTION_DB_USERNAME="test_prod"
-  - DF_PRODUCTION_DB_PASSWORD="test_prod"
+  - DF_PRODUCTION_DB_ADAPTER="mysql2" DF_PRODUCTION_DB_HOST="localhost" DF_PRODUCTION_DB_DATABASE="doubtfire_prod" DF_PRODUCTION_DB_USERNAME="test_prod" DF_PRODUCTION_DB_PASSWORD="test_prod"
 
 # Enable postgresql service
 services:
@@ -59,7 +55,7 @@ before_script:
   # Create the production environment and set it up
   - export RAILS_ENV=production
   # Start mysql instance
-  - sudo service mysql start
+  - sudo service mysql restart
   # Creating database in MySQL
   - mysql -e 'CREATE DATABASE IF NOT EXISTS doubtfire_prod;'
   - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('test_prod') where User='test_prod'; FLUSH PRIVILEGES;"
