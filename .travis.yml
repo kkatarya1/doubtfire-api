@@ -25,7 +25,7 @@ env:
     - DF_PRODUCTION_DB_PASSWORD=test_prod
     - DF_SECRET_KEY_BASE=test_prod
     - DF_SECRET_KEY_ATTR=test_prod
-    - DF_SECRET_KEY_ATTR=test_prod
+    - DF_SECRET_KEY_DEVISE=test_prod
 
 # Enable postgresql service
 services:
