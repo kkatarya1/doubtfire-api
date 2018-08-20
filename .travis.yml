@@ -21,8 +21,8 @@ env:
     - DF_PRODUCTION_DB_ADAPTER=mysql2
     - DF_PRODUCTION_DB_HOST=localhost
     - DF_PRODUCTION_DB_DATABASE=doubtfire_prod
-    - DF_PRODUCTION_DB_USERNAME=test_prod
-    - DF_PRODUCTION_DB_PASSWORD=test_prod
+    - DF_PRODUCTION_DB_USERNAME=root
+    - DF_PRODUCTION_DB_PASSWORD=""
     - DF_SECRET_KEY_BASE=test_prod
     - DF_SECRET_KEY_ATTR=test_prod
     - DF_SECRET_KEY_DEVISE=test_prod
