@@ -36,7 +36,7 @@ group :production do
 end
 
 group :production, :staging do
-  gem 'mysql2'
+  gem 'mysql2', '~> 0.4.0'
 end
 
 # Authentication
