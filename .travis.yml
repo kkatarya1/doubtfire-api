@@ -76,7 +76,7 @@ before_script:
   - export RAILS_ENV=production
   - echo "test_prod" | RAILS_ENV=production bundle exec rake db:create
   # Populate the database
-  - echo "n" | bundle exec rake db:populate
+  - echo "n" | bundle exec rake db:populate DISABLE_DATABASE_ENVIRONMENT_CHECK=1
 
 # Run the tests
 script:
