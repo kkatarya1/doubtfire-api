@@ -47,7 +47,7 @@ git:
 install:
   - sudo apt-get install -y ghostscript imagemagick libmagic-dev libmagickwand-dev libmagic-dev python-pygments libav-tools
   - sudo apt-get install texlive-full
-  - bundle install --without production staging
+  - bundle install --without staging
   - rbenv rehash
 
 # Set the environment before running the tests
@@ -65,7 +65,7 @@ before_script:
   # Create the production environment and set it up
   # ======================================================================================
 
-  - RAILS_ENV=production bundle install
+#  - RAILS_ENV=production bundle install
   #- export RAILS_ENV=production
   # Restart mysql instance
   - sudo service mysql restart
