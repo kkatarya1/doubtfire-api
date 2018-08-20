@@ -73,7 +73,7 @@ before_script:
   - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('test_prod') where User='test_prod'; FLUSH PRIVILEGES;"
   # Create the database of the project in the production environment
   - export RAILS_ENV=production
-  - bundle exec rake db:create
+  - RAILS_ENV=production bundle exec rake db:create
   # Populate the database
   - echo "n" | bundle exec rake db:populate
 
