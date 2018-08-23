@@ -20,12 +20,12 @@ env:
   global:
     - DF_PRODUCTION_DB_ADAPTER=mysql2
     - DF_PRODUCTION_DB_HOST=localhost
-    - DF_PRODUCTION_DB_DATABASE=doubtfire_prod
+    - DF_PRODUCTION_DB_DATABASE=doubtfire_staging
     - DF_PRODUCTION_DB_USERNAME=root
     - DF_PRODUCTION_DB_PASSWORD=""
-    - DF_SECRET_KEY_BASE=test_prod
-    - DF_SECRET_KEY_ATTR=test_prod
-    - DF_SECRET_KEY_DEVISE=test_prod
+    - DF_SECRET_KEY_BASE=test_staging
+    - DF_SECRET_KEY_ATTR=test_staging
+    - DF_SECRET_KEY_DEVISE=test_staging
 
 # Enable postgresql service
 services:
@@ -70,15 +70,15 @@ before_script:
   # Restart mysql instance
   - sudo service mysql restart
   # Creating database in MySQL
-  - mysql -e 'CREATE DATABASE IF NOT EXISTS doubtfire_prod;'
-  - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('test_prod') where User='test_prod'; FLUSH PRIVILEGES;"
+  - mysql -e 'CREATE DATABASE IF NOT EXISTS doubtfire_staging;'
+  - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('test_staging') where User='test_staging'; FLUSH PRIVILEGES;"
   # Create the database of the project in the production environment
   - export RAILS_ENV=production
-  - echo "test_prod" | RAILS_ENV=production bundle exec rake db:create
+  - echo "test_staging" | RAILS_ENV=production bundle exec rake db:create
   # Populate the database
   - echo "n" | bundle exec rake db:populate DISABLE_DATABASE_ENVIRONMENT_CHECK=1
 
 # Run the tests
 script:
   - bundle exec rake test
-  - RAILS_ENV=production bundle exec rake test
+  - RAILS_ENV=staging bundle exec rake test
