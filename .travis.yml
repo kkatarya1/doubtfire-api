@@ -65,18 +65,15 @@ before_script:
   # Create the production environment and set it up
   # ======================================================================================
 
-#  - RAILS_ENV=production bundle install
-  #- export RAILS_ENV=production
   # Restart mysql instance
   - sudo service mysql restart
   # Creating database in MySQL
   - echo "" | mysql -e 'CREATE DATABASE IF NOT EXISTS doubtfire_staging;'
   - echo "" | sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('test_staging') where User='test_staging'; FLUSH PRIVILEGES;"
-  # Create the database of the project in the production environment
-#  - export RAILS_ENV=staging
+  # Create the database of the project in the staging environment
   - echo "test_staging" | RAILS_ENV=staging bundle exec rake db:create
   # Populate the database
-  - echo "n" | bundle exec rake db:populate
+  - echo "n" | RAILS_ENV=staging bundle exec rake db:populate
 
 # Run the tests
 script:
