@@ -70,8 +70,8 @@ before_script:
   # Restart mysql instance
   - sudo service mysql restart
   # Creating database in MySQL
-  - mysql -e 'CREATE DATABASE IF NOT EXISTS doubtfire_staging;'
-  - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('test_staging') where User='test_staging'; FLUSH PRIVILEGES;"
+  - echo "" | mysql -e 'CREATE DATABASE IF NOT EXISTS doubtfire_staging;'
+  - echo "" | sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('test_staging') where User='test_staging'; FLUSH PRIVILEGES;"
   # Create the database of the project in the production environment
   - export RAILS_ENV=staging
   - echo "test_staging" | RAILS_ENV=staging bundle exec rake db:create
