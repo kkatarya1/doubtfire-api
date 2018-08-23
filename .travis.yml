@@ -8,7 +8,7 @@ cache:
   directories:
    - /home/travis/.rvm/
 
-# Specify RVM version
+# Specify Ruby version for rvm
 rvm:
   - 2.3.1
 
@@ -52,8 +52,12 @@ install:
 
 # Set the environment before running the tests
 before_script:
-  # Start postgresql service
-  - sudo service postgresql start
+  # ======================================================================================
+  # Create the development environment and set it up
+  # ======================================================================================
+
+  # Restart postgresql service
+  - sudo service postgresql restart
   # Create postgresql role
   - psql -c "CREATE ROLE itig WITH CREATEDB PASSWORD 'd872\$dh' LOGIN;"
   # Create the database of the project in the dev environment on postgresql
@@ -68,8 +72,8 @@ before_script:
   # Restart mysql instance
   - sudo service mysql restart
   # Creating database in MySQL
-  - echo "" | mysql -e 'CREATE DATABASE IF NOT EXISTS doubtfire_staging;'
-  - echo "" | sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('test_staging') where User='test_staging'; FLUSH PRIVILEGES;"
+  - echo $(DF_STAGING_DB_PASSWORD) | mysql -e 'CREATE DATABASE IF NOT EXISTS doubtfire_staging;'
+  - echo $(DF_STAGING_DB_PASSWORD) | sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('test_staging') where User='test_staging'; FLUSH PRIVILEGES;"
   # Create the database of the project in the staging environment
   - echo "test_staging" | RAILS_ENV=staging bundle exec rake db:create
   # Populate the database
