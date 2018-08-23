@@ -18,11 +18,11 @@ sudo: true
 # Environment settings for Production testing
 env:
   global:
-    - DF_PRODUCTION_DB_ADAPTER=mysql2
-    - DF_PRODUCTION_DB_HOST=localhost
-    - DF_PRODUCTION_DB_DATABASE=doubtfire_staging
-    - DF_PRODUCTION_DB_USERNAME=root
-    - DF_PRODUCTION_DB_PASSWORD=""
+    - DF_STAGING_DB_ADAPTER=mysql2
+    - DF_STAGING_DB_HOST=localhost
+    - DF_STAGING_DB_DATABASE=doubtfire_staging
+    - DF_STAGING_DB_USERNAME=root
+    - DF_STAGING_DB_PASSWORD=""
     - DF_SECRET_KEY_BASE=test_staging
     - DF_SECRET_KEY_ATTR=test_staging
     - DF_SECRET_KEY_DEVISE=test_staging
@@ -73,10 +73,10 @@ before_script:
   - mysql -e 'CREATE DATABASE IF NOT EXISTS doubtfire_staging;'
   - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('test_staging') where User='test_staging'; FLUSH PRIVILEGES;"
   # Create the database of the project in the production environment
-  - export RAILS_ENV=production
+  - export RAILS_ENV=staging
   - echo "test_staging" | RAILS_ENV=staging bundle exec rake db:create
   # Populate the database
-  - echo "n" | bundle exec rake db:populate DISABLE_DATABASE_ENVIRONMENT_CHECK=1
+  - echo "n" | bundle exec rake db:populate
 
 # Run the tests
 script:
