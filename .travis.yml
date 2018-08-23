@@ -15,7 +15,7 @@ rvm:
 # Run processes as sudo
 sudo: true
 
-# Environment settings for Production testing
+# Environment settings for staging testing
 env:
   global:
     - DF_STAGING_DB_ADAPTER=mysql2
@@ -62,7 +62,7 @@ before_script:
   - echo "n" | bundle exec rake db:populate
 
   # ======================================================================================
-  # Create the production environment and set it up
+  # Create the staging environment and set it up
   # ======================================================================================
 
   # Restart mysql instance
