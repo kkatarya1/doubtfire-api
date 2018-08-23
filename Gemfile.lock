@@ -276,7 +276,7 @@ DEPENDENCIES
   minitest-osx
   minitest-rails
   moss_ruby (= 1.1.2)
-  mysql2 (~> 0.4.0)
+  mysql2
   passenger (= 4.0.42)
   pg
   populator
