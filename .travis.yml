@@ -27,7 +27,7 @@ env:
     - DF_SECRET_KEY_ATTR=test_staging
     - DF_SECRET_KEY_DEVISE=test_staging
 
-# Enable postgresql service
+# Enable postgresql and MySQL service
 services:
   - postgresql
   - mysql
@@ -47,7 +47,7 @@ git:
 install:
   - sudo apt-get install -y ghostscript imagemagick libmagic-dev libmagickwand-dev libmagic-dev python-pygments libav-tools
   - sudo apt-get install texlive-full
-  - bundle install --without staging
+  - bundle install --without production replica
   - rbenv rehash
 
 # Set the environment before running the tests
@@ -73,7 +73,6 @@ before_script:
   - sudo service mysql restart
   # Creating database in MySQL
   - echo $(DF_STAGING_DB_PASSWORD) | mysql -e 'CREATE DATABASE IF NOT EXISTS doubtfire_staging;'
-  - echo $(DF_STAGING_DB_PASSWORD) | sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('test_staging') where User='test_staging'; FLUSH PRIVILEGES;"
   # Create the database of the project in the staging environment
   - echo "test_staging" | RAILS_ENV=staging bundle exec rake db:create
   # Populate the database
