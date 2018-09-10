@@ -47,7 +47,7 @@ gem 'json-jwt', '1.7.0'
 
 # Generators for population
 gem 'populator'
-gem 'faker'
+gem 'faker', '~>1.9.1'
 
 # Student submission
 gem 'coderay'
